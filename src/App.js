@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     tg?.ready()
-  }, [])//удалить tg из зависимостей
+  }, [tg])//удалить tg из зависимостей
 
 
   return (
