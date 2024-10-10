@@ -10,6 +10,7 @@ function App() {
 
   useEffect(() => {
     tg.ready()
+    tg.expand()
     tg.disableVerticalSwipes()
   }, [tg])//удалить tg из зависимостей
 
