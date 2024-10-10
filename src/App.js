@@ -10,11 +10,22 @@ function App() {
     tg.ready()
   }, [tg])//удалить tg из зависимостей
 
+  const backButton = tg.BackButton
+
+  if(window.location.search && window.location.pathname !== '/') {
+    backButton.show()
+  } else {
+    backButton.hide()
+  }
+
+  backButton.onClick(() => {
+    window.history.back()
+  })
 
   return (
     <div className="App">
       <Header/>
-      123
+      
       <button className='footer' onClick={onClose}>Закрыть</button>
     </div>
   );
