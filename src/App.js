@@ -14,6 +14,7 @@ function App() {
   return (
     <div className="App">
       <Header/>
+      123
       <button className='footer' onClick={onClose}>Закрыть</button>
     </div>
   );
