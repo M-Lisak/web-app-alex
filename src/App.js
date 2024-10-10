@@ -7,7 +7,7 @@ function App() {
   const {tg, onClose} = useTelegram()
 
   useEffect(() => {
-    tg?.ready()
+    tg.ready()
   }, [tg])//удалить tg из зависимостей
 
 
