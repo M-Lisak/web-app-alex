@@ -1,9 +1,8 @@
 import { useEffect } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram'
-import Header from './components/Header/Header'
-import {Routes, Route} from 'react-router-dom'
-import Main from './components/Main/Main'
+import Button from './components/Button/Button'
+import { Link } from 'react-router-dom'
 
 function App() {
   const {tg} = useTelegram()
@@ -28,11 +27,10 @@ function App() {
 
   return (
     <div className="App">
-      <Header/>
-        <Routes>
-            <Route index element={<Main />}></Route>
-            <Route path={'form'} element={<div></div>}></Route>
-        </Routes>
+      App
+      <Link to={'/main'}>
+        <Button>перейти к Main</Button>
+      </Link>
     </div>
   )
 }
