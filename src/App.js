@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram'
 import Button from './components/Button/Button'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 function App() {
   const {tg} = useTelegram()
@@ -14,8 +14,11 @@ function App() {
   }, [tg])//удалить tg из зависимостей
 
   const backButton = tg.BackButton
+  const location = useLocation()
 
-  if(window.location.search && window.location.pathname !== '/') {
+  // console.log('location', location)
+
+  if(location.search && location.pathname !== '/') {
     backButton.show()
   } else {
     backButton.hide()
