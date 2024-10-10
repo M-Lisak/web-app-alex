@@ -1,23 +1,21 @@
+import { useEffect } from 'react';
 import './App.css';
+import { useTelegram } from './hooks/useTelegram';
 
 function App() {
+  const {tg, onClose} = useTelegram()
+
+  useEffect(() => {
+    tg?.ready()
+  }, [])//удалить tg из зависимостей
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      123
+      <button className='footer' onClick={onClose}>Закрыть</button>
     </div>
   );
 }
 
-export default App;
+export default App
