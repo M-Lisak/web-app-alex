@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
-import './App.css';
-import { useTelegram } from './hooks/useTelegram';
-import Header from './components/Header/Header';
+import { useEffect } from 'react'
+import './App.css'
+import { useTelegram } from './hooks/useTelegram'
+import Header from './components/Header/Header'
+import {Routes, Route} from 'react-router-dom'
+import Main from './components/Main/Main'
 
 function App() {
-  const {tg, onClose} = useTelegram()
+  const {tg} = useTelegram()
 
   useEffect(() => {
     tg.ready()
@@ -25,10 +27,12 @@ function App() {
   return (
     <div className="App">
       <Header/>
-      
-      <button className='footer' onClick={onClose}>Закрыть</button>
+        <Routes>
+            <Route index element={<Main />}></Route>
+            <Route path={'form'} element={<div></div>}></Route>
+        </Routes>
     </div>
-  );
+  )
 }
 
 export default App
