@@ -16,6 +16,7 @@ function App() {
     tg.disableVerticalSwipes()
 
     tg.BackButton.show()
+    tg.isClosingConfirmationEnabled = true
   }, [tg])
 
   const onClickBut = () => {
