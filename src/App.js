@@ -2,38 +2,51 @@ import { useEffect } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram'
 import Button from './components/Button/Button'
-import { Link, useLocation } from 'react-router-dom'
+import {/*  Link, */ useLocation, useNavigate, /* useNavigation  */} from 'react-router-dom'
 
 function App() {
   const {tg} = useTelegram()
+  const location = useLocation()
+  const navigation = useNavigate()
+  // const nav = useNavigation()
 
   useEffect(() => {
     tg.ready()
     tg.expand()
     tg.disableVerticalSwipes()
-  }, [tg])//удалить tg из зависимостей
 
-  const backButton = tg.BackButton
-  const location = useLocation()
+    tg.BackButton.show()
+  }, [tg])
 
-  // console.log('location', location)
-
-  if(location.search && location.pathname !== '/') {
-    backButton.show()
-  } else {
-    backButton.hide()
+  const onClickBut = () => {
+    navigation('/main')
+    
   }
 
-  backButton.onClick(() => {
-    window.history.back()
-  })
+  useEffect(() => {
+    console.log("backButton", location)
+    // const backButton = tg.BackButton
+
+    // if(location.search && location.pathname !== '/') {
+    //   backButton.show()
+    // } else {
+    //   backButton.hide()
+    // }
+  
+    // backButton.onClick(() => {
+    //   navigate(-1)
+    // })
+
+  // eslint-disable-next-line
+  }, [location.pathname])
 
   return (
     <div className="App">
       App
-      <Link to={'/main'}>
-        <Button>перейти к Main</Button>
-      </Link>
+      {/* <Link to={'/main'}> */}
+      sd
+        <Button onClick={onClickBut}>перейти к Main</Button>
+      {/* </Link> */}
     </div>
   )
 }
