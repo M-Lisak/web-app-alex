@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Main from "../components/Main/Main";
+import UserForm from "../components/UserForm/UserForm";
 
 const router = createBrowserRouter([
     { 
@@ -8,12 +8,12 @@ const router = createBrowserRouter([
         element: <App />,
     },
     { 
-        path: '/main',
-        element: <Main />,
+        path: '/user',
+        element: <UserForm />,
         // handle: {crumb: () => <Link to></Link>},
         children: [
             {
-                path: '/main/second',
+                path: '/user/second',
                 element: <div>second</div>,
                 // handle: {crumb: () => "second"}
             }

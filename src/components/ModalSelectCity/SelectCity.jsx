@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, List, Modal } from 'antd';
+import './SelectCity.css'
 
 const SelectCity = (props) => {
   const { open, setOpen, setCity } = props

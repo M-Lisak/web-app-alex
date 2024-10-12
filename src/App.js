@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram'
 import { Button, Form, InputNumber, Select, Tag } from 'antd'
 import SelectCity from './components/ModalSelectCity/SelectCity'
 import SelectDate from './components/ModalSelectDate/SelectDate'
 import { Iconfa } from './iconsadsad'
+import { useNavigate } from 'react-router-dom'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
@@ -24,6 +25,7 @@ function App() {
   const [ currencyGet, setCurrencyGet ] = useState(CURRENCY.usdt)
   const [ valueInt, setValueInt ] = useState(null)
   const [ exchangeRate, setExchangeRate ] = useState(0.234)
+  const navigate = useNavigate()
 
   useEffect(() => {
     tg.ready()
@@ -45,6 +47,17 @@ function App() {
   const exchangeRateCalc = (value) => {
     return (value * exchangeRate).toFixed(2)
   }
+
+  const submitForm = useCallback(async => {
+    form.validateFields()
+        .then(() => {
+          //сохраняем данные, и переходим к другой странице
+          //так же нужно добавить breadcrumbs(в идеале кнопку назад в тг))))))
+          console.log('success', form.getFieldsValue())
+          navigate('/user')
+        })
+        // eslint-disable-next-line
+  }, [form])
 
   return (
     <div className="app">
@@ -94,7 +107,7 @@ function App() {
         <div className='exchange-rate'>{`1 ${currencyGet} = ${exchangeRate} ${currencyGive}`}</div>
 
         <Form.Item>
-          <Button className='submit-button'>Обмен</Button>
+          <Button className='submit-button' onClick={submitForm}>Обмен</Button>
         </Form.Item>
 
       </Form>
