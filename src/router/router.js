@@ -19,7 +19,7 @@ const router = createBrowserRouter([
             }
         ]
     },
-    { path: '/X', element: <div>пашол ты</div>}
+    { path: '/success', element: <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'red', fontSize: 190}}>СКАМ</div>}
 ])
 
 export default router

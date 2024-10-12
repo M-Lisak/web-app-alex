@@ -1,9 +1,28 @@
-import { Form, Input } from 'antd'
-import React from 'react'
+import { Button, Form, Input, InputNumber } from 'antd'
+import React, { useCallback, useState } from 'react'
 import './UserForm.css'
+import { useNavigate } from 'react-router-dom'
 
 const UserForm = () => {
     const [form] = Form.useForm()
+    const [phone, setPhone] = useState(null)
+    const navigate = useNavigate()
+
+    const onChangePhone = (val) => {
+        setPhone(val)
+    }
+
+    const submitForm = useCallback(async => {
+        form.validateFields()
+            .then(() => {
+              //сохраняем данные, и переходим к другой странице
+              //так же нужно добавить breadcrumbs(в идеале кнопку назад в тг))))))
+              console.log('success', form.getFieldsValue())
+              navigate('/success')
+            })
+            // eslint-disable-next-line
+      }, [form])
+
     return (
         <div className='form'>
             <div className='user-form-info'>
@@ -41,6 +60,23 @@ const UserForm = () => {
                 </Form.Item>
                 <Form.Item label="Имя">
                     <Input />
+                </Form.Item>
+                <Form.Item label="Отчество">
+                    <Input />
+                </Form.Item>
+                <Form.Item label="Номер телефона">
+                    <InputNumber
+                        controls={false}
+                        value={phone}
+                        onChange={onChangePhone}
+                        placeholder='89123456789'
+                    />
+                </Form.Item>
+                <Form.Item label="Адрес колшелька USDT TRC-20">
+                    <Input />
+                </Form.Item>
+                <Form.Item>
+                    <Button className='submit-button' onClick={submitForm}>Создать заявку на обмен</Button>
                 </Form.Item>
            </Form>
 
