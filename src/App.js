@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram'
-import { Form, Select } from 'antd'
+import { Button, Form, Input, Select, Tag } from 'antd'
 import SelectCity from './components/ModalSelectCity/SelectCity'
 import SelectDate from './components/ModalSelectDate/SelectDate'
+import { Iconfa } from './iconsadsad'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
@@ -14,6 +15,8 @@ function App() {
   const [ form ] = Form.useForm()
   const [ city, setCity ] = useState('')
   const [ date, setDate ] = useState('')
+  const [ currencyGive, setCurrencyGive ] = useState('RUB')
+  const [ currencyGet, setCurrencyGet ] = useState('USDT')
 
   useEffect(() => {
     tg.ready()
@@ -21,6 +24,14 @@ function App() {
     tg.disableVerticalSwipes()
     // tg.enableClosingConfirmation()
   }, [tg])
+
+  const changeCurrencyGive = () => {
+    setCurrencyGive('RUB1')
+  }
+
+  const changeCurrencyGet = () => {
+    setCurrencyGet('USDT1')
+  }
 
   return (
     <div className="app">
@@ -40,6 +51,41 @@ function App() {
             open={false}
           />
         </Form.Item>
+        {/* в label закинуть JSX, чтобы справа отображался значок обмена */}
+        <Form.Item label="Обмен">
+          <div className='app-exchange'>
+            <div className='app-exchange-give'>
+              <div className='app-exchange-left'>
+                <Tag
+                  className='app-exchange-tag'
+                  onClick={changeCurrencyGive}
+                >{currencyGive}</Tag>
+                Отдаёте
+              </div>
+              <Input className='app-exchange-input'/>
+            </div>
+            <div className='app-exchange-icon'>
+              <Iconfa />
+            </div>
+            <div className='app-exchange-get'>
+              <div className='app-exchange-left'>
+                <Tag
+                  className='app-exchange-tag'
+                  onClick={changeCurrencyGet}
+                >{currencyGet}</Tag>
+                Получаете
+              </div>
+              {'123123'}
+            </div>
+          </div>
+        </Form.Item>
+
+        <div className='exchange-rate'>{'курс'}</div>
+
+        <Form.Item>
+          <Button className='submit-button'>Обмен</Button>
+        </Form.Item>
+
       </Form>
 
       <SelectCity

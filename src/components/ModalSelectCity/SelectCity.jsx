@@ -2,15 +2,13 @@ import React from 'react';
 import { Button, List, Modal } from 'antd';
 
 const SelectCity = (props) => {
-  const { open, setOpen } = props
+  const { open, setOpen, setCity } = props
 
-  const handleOk = () => {
-    setOpen(false);
-  };
-
-  const handleCancel = () => {
-    setOpen(false);
-  };
+  const selectCity = (value) => {
+    console.log("value", value)
+    setCity(value)
+    setOpen(false)
+  }
 
   const data = [
     {title: 'city1'},
@@ -33,19 +31,18 @@ const SelectCity = (props) => {
   return (
     <Modal
       open={open}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      closable={true}
+      closable={false}
       footer={null}
       width={'100%'}
+      height={'100%'}
     >
       <List
         className='select-city-list'
-        grid={{column: 3}}
+        grid={{column: 2, gutter: 40}}
         dataSource={data}
         renderItem={(item) => (
           <List.Item>
-            <Button>{item.title}</Button>
+            <Button onClick={() => selectCity(item.title)}>{item.title}</Button>
           </List.Item>
         )}
       />    
