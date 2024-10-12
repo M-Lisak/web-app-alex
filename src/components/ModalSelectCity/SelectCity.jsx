@@ -42,7 +42,7 @@ const SelectCity = (props) => {
         dataSource={data}
         renderItem={(item) => (
           <List.Item>
-            <Button onClick={() => selectCity(item.title)}>{item.title}</Button>
+            <Button className='modal-button' onClick={() => selectCity(item.title)}>{item.title}</Button>
           </List.Item>
         )}
       />    

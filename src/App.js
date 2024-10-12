@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram'
-import { Button, Form, Input, Select, Tag } from 'antd'
+import { Button, Form, InputNumber, Select, Tag } from 'antd'
 import SelectCity from './components/ModalSelectCity/SelectCity'
 import SelectDate from './components/ModalSelectDate/SelectDate'
 import { Iconfa } from './iconsadsad'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
+
+const CURRENCY = {
+  rub: 'RUB',
+  usdt: 'USDT'
+}
 
 function App() {
   const {tg} = useTelegram()
@@ -15,8 +20,10 @@ function App() {
   const [ form ] = Form.useForm()
   const [ city, setCity ] = useState('')
   const [ date, setDate ] = useState('')
-  const [ currencyGive, setCurrencyGive ] = useState('RUB')
-  const [ currencyGet, setCurrencyGet ] = useState('USDT')
+  const [ currencyGive, setCurrencyGive ] = useState(CURRENCY.rub)
+  const [ currencyGet, setCurrencyGet ] = useState(CURRENCY.usdt)
+  const [ valueInt, setValueInt ] = useState(null)
+  const [ exchangeRate, setExchangeRate ] = useState(0.234)
 
   useEffect(() => {
     tg.ready()
@@ -25,18 +32,24 @@ function App() {
     // tg.enableClosingConfirmation()
   }, [tg])
 
-  const changeCurrencyGive = () => {
-    setCurrencyGive('RUB1')
+  const convertCurrency = () => {
+    setCurrencyGive(prev => prev === CURRENCY.rub ? CURRENCY.usdt : CURRENCY.rub)
+    setCurrencyGet(prev => prev === CURRENCY.rub ? CURRENCY.usdt : CURRENCY.rub)
+    setExchangeRate(prev => currencyGive === CURRENCY.rub ? 0.124 : 124)
   }
 
-  const changeCurrencyGet = () => {
-    setCurrencyGet('USDT1')
+  const onChangeValue = (value) => {
+      setValueInt(value)
+  }
+
+  const exchangeRateCalc = (value) => {
+    return (value * exchangeRate).toFixed(2)
   }
 
   return (
     <div className="app">
       <Form form={form} name='app' layout='vertical'>
-        <Form.Item label="Город">
+        <Form.Item label="Город" /* required */>
           <Select
             onClick={() => setOpenSelectCity(true)}
             value={city}
@@ -58,29 +71,27 @@ function App() {
               <div className='app-exchange-left'>
                 <Tag
                   className='app-exchange-tag'
-                  onClick={changeCurrencyGive}
                 >{currencyGive}</Tag>
                 Отдаёте
               </div>
-              <Input className='app-exchange-input'/>
+              <InputNumber className='app-exchange-input' controls={false} value={valueInt} onChange={onChangeValue}/>
             </div>
-            <div className='app-exchange-icon'>
+            <div className='app-exchange-icon' onClick={convertCurrency}>
               <Iconfa />
             </div>
             <div className='app-exchange-get'>
               <div className='app-exchange-left'>
                 <Tag
                   className='app-exchange-tag'
-                  onClick={changeCurrencyGet}
                 >{currencyGet}</Tag>
                 Получаете
               </div>
-              {'123123'}
+              <span className='app-exchange-get-val'>{exchangeRateCalc(valueInt)}</span>
             </div>
           </div>
         </Form.Item>
 
-        <div className='exchange-rate'>{'курс'}</div>
+        <div className='exchange-rate'>{`1 ${currencyGet} = ${exchangeRate} ${currencyGive}`}</div>
 
         <Form.Item>
           <Button className='submit-button'>Обмен</Button>
