@@ -37,8 +37,10 @@ const SelectCity = (props) => {
       onCancel={handleCancel}
       closable={true}
       footer={null}
+      width={'100%'}
     >
       <List
+        className='select-city-list'
         grid={{column: 3}}
         dataSource={data}
         renderItem={(item) => (
