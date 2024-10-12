@@ -18,3 +18,9 @@ body {
   margin-top: auto;
   align-items: center;
 }
+
+.app {
+  display: flex;
+  flex-direction: column;
+  /* padding: ; */
+}

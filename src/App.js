@@ -1,54 +1,57 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram'
-import Button from './components/Button/Button'
-import {/*  Link, */ useLocation, useNavigate, /* useNavigation  */} from 'react-router-dom'
+import { Form, Select } from 'antd'
+import SelectCity from './components/ModalSelectCity/SelectCity'
+import SelectDate from './components/ModalSelectDate/SelectDate'
+
+//нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
 function App() {
   const {tg} = useTelegram()
-  const location = useLocation()
-  const navigation = useNavigate()
-  // const nav = useNavigation()
+  const [ openSelectCity, setOpenSelectCity ] = useState(false)
+  const [ openSelectDate, setOpenSelectDate ] = useState(false)
+  const [ form ] = Form.useForm()
+  const [ city, setCity ] = useState('')
+  const [ date, setDate ] = useState('')
 
   useEffect(() => {
     tg.ready()
     tg.expand()
     tg.disableVerticalSwipes()
-
-    tg.BackButton.show()
-    tg.enableClosingConfirmation()
-    // tg.isClosingConfirmationEnabled = true
+    // tg.enableClosingConfirmation()
   }, [tg])
 
-  const onClickBut = () => {
-    navigation('/main')
-    
-  }
-
-  useEffect(() => {
-    console.log("backButton", location)
-    // const backButton = tg.BackButton
-
-    // if(location.search && location.pathname !== '/') {
-    //   backButton.show()
-    // } else {
-    //   backButton.hide()
-    // }
-  
-    // backButton.onClick(() => {
-    //   navigate(-1)
-    // })
-
-  // eslint-disable-next-line
-  }, [location.pathname])
-
   return (
-    <div className="App">
-      App
-      {/* <Link to={'/main'}> */}
-      sd
-        <Button onClick={onClickBut}>перейти к Main</Button>
-      {/* </Link> */}
+    <div className="app">
+      <Form form={form} name='app' layout='vertical'>
+        <Form.Item label="Город">
+          <Select
+            onClick={() => setOpenSelectCity(true)}
+            value={city}
+            open={false}
+            // suffixIcon
+          />
+        </Form.Item>
+        <Form.Item label="Дата и время">
+          <Select
+            onClick={() => setOpenSelectDate(true)}
+            value={date}
+            open={false}
+          />
+        </Form.Item>
+      </Form>
+
+      <SelectCity
+        open={openSelectCity}
+        setOpen={setOpenSelectCity}
+        setCity={setCity}
+      />
+      <SelectDate
+        open={openSelectDate}
+        setOpen={setOpenSelectDate}
+        setDate={setDate}
+      />
     </div>
   )
 }
