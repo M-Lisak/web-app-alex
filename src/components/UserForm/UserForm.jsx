@@ -36,7 +36,7 @@ const UserForm = () => {
     const onFocus = (e) => {
         const currentHeight = ref.current.clientHeight
         setHeight(currentHeight + 300)//хз сколько нужно добавлять(клавиатуры могут быть разные)
-        e?.target?.scrollIntoView({block: 'end'})
+        e?.target?.scrollIntoView({behavior: 'smooth' , block: 'end'})
     }
 
     return (

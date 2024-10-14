@@ -4,7 +4,7 @@ import { useTelegram } from './hooks/useTelegram'
 import { Button, Form, InputNumber, Select, Tag } from 'antd'
 import SelectCity from './components/ModalSelectCity/SelectCity'
 import SelectDate from './components/ModalSelectDate/SelectDate'
-import { Iconfa } from './iconsadsad'
+import { IconEx } from './iconEx'
 import { useNavigate } from 'react-router-dom'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
@@ -96,7 +96,7 @@ function App() {
               />
             </div>
             <div className='app-exchange-icon' onClick={convertCurrency}>
-              <Iconfa />
+              <IconEx />
             </div>
             <div className='app-exchange-get'>
               <div className='app-exchange-left'>
