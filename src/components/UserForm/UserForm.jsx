@@ -83,7 +83,7 @@ const UserForm = () => {
                     />
                 </Form.Item>
                 <Form.Item label="Адрес колшелька USDT TRC-20">
-                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={(e) => e?.target?.scrollIntoView()}/>
+                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={(e) => e?.target?.scrollIntoView({block: 'end'})}/>
                 </Form.Item>
                 <Form.Item>
                     <Button
