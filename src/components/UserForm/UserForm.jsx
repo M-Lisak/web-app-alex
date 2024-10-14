@@ -31,11 +31,6 @@ const UserForm = () => {
             // eslint-disable-next-line
     }, [form])
 
-    const addressFocus = (e) => {
-        console.log('e', e)
-        
-    }
-
     return (
         <div className='form'>
             <div className='user-form-info'>
@@ -82,12 +77,13 @@ const UserForm = () => {
                         controls={false}
                         value={phone}
                         onChange={onChangePhone}
+                        onFocus={(e) => e?.target?.scrollIntoView()}
                         placeholder='89123456789'
                         onPressEnter={onPressEnter}
                     />
                 </Form.Item>
                 <Form.Item label="Адрес колшелька USDT TRC-20">
-                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={addressFocus}/>
+                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={(e) => e?.target?.scrollIntoView()}/>
                 </Form.Item>
                 <Form.Item>
                     <Button
