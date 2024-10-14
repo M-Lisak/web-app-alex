@@ -82,7 +82,7 @@ const UserForm = () => {
                     />
                 </Form.Item>
                 <Form.Item label="Адрес колшелька USDT TRC-20">
-                    <Input onPressEnter={onPressEnter}/>
+                    <Input onPressEnter={(e) => e?.target?.blur()}/>
                 </Form.Item>
                 <Form.Item>
                     <Button className='submit-button' onClick={submitForm}>Создать заявку на обмен</Button>
