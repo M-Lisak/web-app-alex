@@ -33,6 +33,12 @@ const UserForm = () => {
             // eslint-disable-next-line
     }, [form])
 
+    const onFocus = (e) => {
+        const currentHeight = ref.current.clientHeight
+        setHeight(currentHeight + 300)//хз сколько нужно добавлять(клавиатуры могут быть разные)
+        e?.target?.scrollIntoView({block: 'end'})
+    }
+
     return (
         <div className='form' ref={ref} style={{height: height ? height : '100vh'}}>
             <div className='user-form-info'>
@@ -79,19 +85,13 @@ const UserForm = () => {
                         controls={false}
                         value={phone}
                         onChange={onChangePhone}
-                        onFocus={(e) => e?.target?.scrollIntoView()}
-                        placeholder='89123456789'
+                        onFocus={onFocus}
+                        onBlur={() => setHeight(0)}
                         onPressEnter={onPressEnter}
                     />
                 </Form.Item>
                 <Form.Item label="Адрес колшелька USDT TRC-20">
-                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={(e) => {
-                        // ref.current.clientHeight
-                        console.log('set')
-                        setHeight(1000)
-                        e?.target?.scrollIntoView(/* {block: 'end'} */)
-                    }} onBlur={(e) => setHeight(0)}/>
-
+                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={onFocus} onBlur={() => setHeight(0)}/>
                 </Form.Item>
                 <Form.Item>
                     <Button
