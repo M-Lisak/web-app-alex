@@ -31,6 +31,11 @@ const UserForm = () => {
             // eslint-disable-next-line
     }, [form])
 
+    const addressFocus = (e) => {
+        console.log('e', e)
+        
+    }
+
     return (
         <div className='form'>
             <div className='user-form-info'>
@@ -82,10 +87,15 @@ const UserForm = () => {
                     />
                 </Form.Item>
                 <Form.Item label="Адрес колшелька USDT TRC-20">
-                    <Input onPressEnter={(e) => e?.target?.blur()}/>
+                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={addressFocus}/>
                 </Form.Item>
                 <Form.Item>
-                    <Button className='submit-button' onClick={submitForm}>Создать заявку на обмен</Button>
+                    <Button
+                        className='submit-button'
+                        onClick={submitForm}
+                    >
+                        Создать заявку на обмен
+                    </Button>
                 </Form.Item>
            </Form>
 
