@@ -3,6 +3,14 @@ import React, { useCallback, useState } from 'react'
 import './UserForm.css'
 import { useNavigate } from 'react-router-dom'
 
+export const onPressEnter = (e) => {
+    const eventForm = e.target.form
+    const index = [...eventForm].indexOf(e.target)
+    console.log('index', index)
+    eventForm[index + 1].focus()
+    e.preventDefault()
+}
+
 const UserForm = () => {
     const [form] = Form.useForm()
     const [phone, setPhone] = useState(null)
@@ -21,7 +29,7 @@ const UserForm = () => {
               navigate('/success')
             })
             // eslint-disable-next-line
-      }, [form])
+    }, [form])
 
     return (
         <div className='form'>
@@ -55,14 +63,14 @@ const UserForm = () => {
                 </div>
             </div>
            <Form form={form} name='user' layout='vertical'>
-                <Form.Item label="Фамилия">
-                    <Input />
+                <Form.Item label="Фамилия" name="lastName">
+                    <Input onPressEnter={onPressEnter}/>
                 </Form.Item>
                 <Form.Item label="Имя">
-                    <Input />
+                    <Input onPressEnter={onPressEnter}/>
                 </Form.Item>
                 <Form.Item label="Отчество">
-                    <Input />
+                    <Input onPressEnter={onPressEnter}/>
                 </Form.Item>
                 <Form.Item label="Номер телефона">
                     <InputNumber
@@ -70,10 +78,11 @@ const UserForm = () => {
                         value={phone}
                         onChange={onChangePhone}
                         placeholder='89123456789'
+                        onPressEnter={onPressEnter}
                     />
                 </Form.Item>
                 <Form.Item label="Адрес колшелька USDT TRC-20">
-                    <Input />
+                    <Input onPressEnter={onPressEnter}/>
                 </Form.Item>
                 <Form.Item>
                     <Button className='submit-button' onClick={submitForm}>Создать заявку на обмен</Button>

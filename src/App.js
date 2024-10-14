@@ -6,6 +6,7 @@ import SelectCity from './components/ModalSelectCity/SelectCity'
 import SelectDate from './components/ModalSelectDate/SelectDate'
 import { Iconfa } from './iconsadsad'
 import { useNavigate } from 'react-router-dom'
+import { onPressEnter } from './components/UserForm/UserForm'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
@@ -87,7 +88,13 @@ function App() {
                 >{currencyGive}</Tag>
                 Отдаёте
               </div>
-              <InputNumber className='app-exchange-input' controls={false} value={valueInt} onChange={onChangeValue}/>
+              <InputNumber
+                className='app-exchange-input'
+                controls={false}
+                value={valueInt}
+                onChange={onChangeValue}
+                onPressEnter={onPressEnter}
+              />
             </div>
             <div className='app-exchange-icon' onClick={convertCurrency}>
               <Iconfa />
