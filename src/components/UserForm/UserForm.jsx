@@ -1,5 +1,5 @@
 import { Button, Form, Input, InputNumber } from 'antd'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import './UserForm.css'
 import { useNavigate } from 'react-router-dom'
 
@@ -12,8 +12,10 @@ export const onPressEnter = (e) => {
 }
 
 const UserForm = () => {
+    const ref = useRef()
     const [form] = Form.useForm()
     const [phone, setPhone] = useState(null)
+    const [height, setHeight] = useState(0)
     const navigate = useNavigate()
 
     const onChangePhone = (val) => {
@@ -32,7 +34,7 @@ const UserForm = () => {
     }, [form])
 
     return (
-        <div className='form'>
+        <div className='form' ref={ref} style={{height: height ? height : '100vh'}}>
             <div className='user-form-info'>
                 <h4>Заявка на обмен</h4>
                 <div className='user-form-info-wrapper'>
@@ -83,7 +85,13 @@ const UserForm = () => {
                     />
                 </Form.Item>
                 <Form.Item label="Адрес колшелька USDT TRC-20">
-                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={(e) => e?.target?.scrollIntoView({block: 'end'})}/>
+                    <Input onPressEnter={(e) => e?.target?.blur()} onFocus={(e) => {
+                        // ref.current.clientHeight
+                        console.log('set')
+                        setHeight(1000)
+                        e?.target?.scrollIntoView(/* {block: 'end'} */)
+                    }} onBlur={(e) => setHeight(0)}/>
+
                 </Form.Item>
                 <Form.Item>
                     <Button
