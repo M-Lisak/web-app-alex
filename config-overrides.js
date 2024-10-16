@@ -19,5 +19,6 @@ module.exports = function override(config) {
             Buffer: ['buffer', 'Buffer']
         })
     ])
+    config.resolve.plugins = config.resolve.plugins.filter(({ constructor }) => constructor && constructor.name === 'ModuleScopePlugin');
     return config;
 }
