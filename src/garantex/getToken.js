@@ -20,7 +20,7 @@ export const getToken = async () => {
 
 const testToken = async (token) => {
     try {
-        const { data } = await axios.get(`https://garantex.org/api/v2/depth?markets`, {
+        const { data } = await axios.get(`https://garantex.org/api/v2/markets`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

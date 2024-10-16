@@ -1,3 +1,8 @@
+from = "/api/*"
+  to = "https://garantex.org/api/v2/:splat"
+  status = 200
+  force = true
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
