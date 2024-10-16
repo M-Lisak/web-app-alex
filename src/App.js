@@ -7,15 +7,14 @@ import SelectDate from './components/ModalSelectDate/SelectDate.jsx'
 import { IconEx } from './iconEx.jsx'
 import { useNavigate } from 'react-router-dom'
 import { IconExRight } from './iconExRight.jsx'
-// import { getExchangeRate } from '../garantex'
+import { CURRENCY_RUB, CURRENCY_USDT } from './constants.js'
+import { getExchangeRate } from './garantex/index.js'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
 function App() {
-  const RUB = process.env.CURRENCY_RUB
-  console.log('rub', RUB)
-  console.log('process', process.env)
-  const USDT = process.env.CURRENCY_USDT
+  const RUB = CURRENCY_RUB
+  const USDT = CURRENCY_USDT
   const {tg} = useTelegram()
   const [ openSelectCity, setOpenSelectCity ] = useState(false)
   const [ openSelectDate, setOpenSelectDate ] = useState(false)
@@ -39,7 +38,10 @@ function App() {
     (async() => {
       //запускается при каждой смене RUB/USDT
       console.log('запустилось')
-      // await getExchangeRate()
+      const rate = await getExchangeRate()
+      console.log('rate', rate)
+
+      setExchangeRate(currencyGive === 'RUB' ? rate?.asks || 0 : rate?.bids || 0)//или наоборот
 
     })()
   }, [currencyGive])
@@ -47,7 +49,6 @@ function App() {
   const convertCurrency = () => {
     setCurrencyGive(prev => prev === RUB ? USDT : RUB)
     setCurrencyGet(prev => prev === RUB ? USDT : RUB)
-    setExchangeRate(prev => currencyGive === RUB ? 0.124 : 124)
   }
 
   const onChangeValue = (value) => {
