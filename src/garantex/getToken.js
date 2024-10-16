@@ -22,8 +22,12 @@ const testToken = async (token) => {
     try {
         const { data } = await axios.get(`https://garantex.org/api/v2/markets`, {
             headers: {
-                Authorization: `Bearer ${token}`
-            }
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Methods": "GET",
+                "Access-Control-Allow-Headers": '*',
+                // "Access-Control-Allow-Credentials": false,
+                "Authorization": `Bearer ${token}`
+            },
         })
         return data?.length ? true : false
     } catch (error) {
