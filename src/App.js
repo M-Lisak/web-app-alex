@@ -1,31 +1,31 @@
 import { useCallback, useEffect, useState } from 'react'
 import './App.css'
-import { useTelegram } from './hooks/useTelegram'
+import { useTelegram } from './hooks/useTelegram.js'
 import { Button, Form, InputNumber, Select, Tag } from 'antd'
-import SelectCity from './components/ModalSelectCity/SelectCity'
-import SelectDate from './components/ModalSelectDate/SelectDate'
-import { IconEx } from './iconEx'
+import SelectCity from './components/ModalSelectCity/SelectCity.jsx'
+import SelectDate from './components/ModalSelectDate/SelectDate.jsx'
+import { IconEx } from './iconEx.jsx'
 import { useNavigate } from 'react-router-dom'
-import { IconExRight } from './iconExRight'
+import { IconExRight } from './iconExRight.jsx'
+// import { getExchangeRate } from '../garantex'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
-const CURRENCY = {
-  rub: 'RUB',
-  usdt: 'USDT'
-}
-
 function App() {
+  const RUB = process.env.CURRENCY_RUB
+  console.log('rub', RUB)
+  console.log('process', process.env)
+  const USDT = process.env.CURRENCY_USDT
   const {tg} = useTelegram()
   const [ openSelectCity, setOpenSelectCity ] = useState(false)
   const [ openSelectDate, setOpenSelectDate ] = useState(false)
   const [ form ] = Form.useForm()
   const [ city, setCity ] = useState('')
   const [ date, setDate ] = useState('')
-  const [ currencyGive, setCurrencyGive ] = useState(CURRENCY.rub)
-  const [ currencyGet, setCurrencyGet ] = useState(CURRENCY.usdt)
+  const [ currencyGive, setCurrencyGive ] = useState(RUB)
+  const [ currencyGet, setCurrencyGet ] = useState(USDT)
   const [ valueInt, setValueInt ] = useState(null)
-  const [ exchangeRate, setExchangeRate ] = useState(0.234)
+  const [ exchangeRate, setExchangeRate ] = useState(0)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -35,10 +35,19 @@ function App() {
     // tg.enableClosingConfirmation()
   }, [tg])
 
+  useEffect(() => {
+    (async() => {
+      //запускается при каждой смене RUB/USDT
+      console.log('запустилось')
+      // await getExchangeRate()
+
+    })()
+  }, [currencyGive])
+
   const convertCurrency = () => {
-    setCurrencyGive(prev => prev === CURRENCY.rub ? CURRENCY.usdt : CURRENCY.rub)
-    setCurrencyGet(prev => prev === CURRENCY.rub ? CURRENCY.usdt : CURRENCY.rub)
-    setExchangeRate(prev => currencyGive === CURRENCY.rub ? 0.124 : 124)
+    setCurrencyGive(prev => prev === RUB ? USDT : RUB)
+    setCurrencyGet(prev => prev === RUB ? USDT : RUB)
+    setExchangeRate(prev => currencyGive === RUB ? 0.124 : 124)
   }
 
   const onChangeValue = (value) => {
