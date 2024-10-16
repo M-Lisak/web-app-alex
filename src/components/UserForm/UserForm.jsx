@@ -1,7 +1,7 @@
 import { Button, Form, Input, InputNumber } from 'antd'
 import React, { useCallback, useRef, useState } from 'react'
 import './UserForm.css'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const onPressEnter = (e) => {
     const eventForm = e.target.form
@@ -102,7 +102,7 @@ const UserForm = () => {
                     </Button>
                 </Form.Item>
            </Form>
-
+           <div className='footer-rules'>Я прочитал&nbsp;<Link>правила</Link>&nbsp;и принимаю условия сервиса</div>
         </div>
     )
 }

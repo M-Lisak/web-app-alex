@@ -6,6 +6,7 @@ import SelectCity from './components/ModalSelectCity/SelectCity'
 import SelectDate from './components/ModalSelectDate/SelectDate'
 import { IconEx } from './iconEx'
 import { useNavigate } from 'react-router-dom'
+import { IconExRight } from './iconExRight'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
@@ -78,7 +79,7 @@ function App() {
           />
         </Form.Item>
         {/* в label закинуть JSX, чтобы справа отображался значок обмена */}
-        <Form.Item label="Обмен">
+        <Form.Item className='app-exchange-label' label={<div className='app-exchange-title'><span>Обмен</span><IconExRight /></div>}>
           <div className='app-exchange'>
             <div className='app-exchange-give'>
               <div className='app-exchange-left'>

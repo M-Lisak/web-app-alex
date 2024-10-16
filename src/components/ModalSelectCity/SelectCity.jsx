@@ -42,7 +42,7 @@ const SelectCity = (props) => {
         grid={{column: 2, gutter: 40}}
         dataSource={data}
         renderItem={(item) => (
-          <List.Item>
+          <List.Item className='select-city-item'>
             <Button className='modal-button' onClick={() => selectCity(item.title)}>{item.title}</Button>
           </List.Item>
         )}

@@ -105,8 +105,23 @@ body {
   height: 50px;
   width: auto;
   font-size: 25px;
+  margin-bottom: auto;
 }
 
 .app-exchange-get-val {
   font-size: 25px;
+}
+
+.app-exchange-label {
+  /* display: flex; */
+  label {
+    width: 100%;
+  }
+}
+
+.app-exchange-title {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
 }
