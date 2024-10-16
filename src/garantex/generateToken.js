@@ -8,15 +8,6 @@ const host = "garantex.org" // для тестового сервера испо
 const privateKey = PRIVATE_TOKEN // приватный ключ, полученный на этапе создания API ключей
 const uid =  UID// UID, полученный на этапе создания API ключей
 
-const adf = jwt.sign({
-    exp: Math.round(Date.now() / 1000) + 24 * 60 * 60, // JWT Request TTL: 60 minutes (day)
-    jti: crypto.randomBytes(12).toString("hex"),
-  },
-  new Buffer.from(privateKey, "base64").toString("ascii"),
-  { algorithm: "RS256" }
-)
-
-console.log('adf', adf)
 export const generateToken = async () => {
     try {
       let { data } = await axios.post(
