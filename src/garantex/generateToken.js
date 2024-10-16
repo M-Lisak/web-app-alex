@@ -1,7 +1,7 @@
 import axios from 'axios';
 // const jwt = require("jsonwebtoken"); // npm i jsonwebtoken
 import jwt from 'jsonwebtoken'
-import crypto from 'crypto'
+import crypto from 'crypto-browserify'
 import { PRIVATE_TOKEN, UID } from '../constants';
 
 const host = "garantex.org" // для тестового сервера используйте stage.garantex.biz
