@@ -13,7 +13,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "garan": "node garantex/index.js"
+    "build": "react-app-rewired build"
   },
   "eslintConfig": {
     "extends": [
