@@ -41,14 +41,16 @@ function App() {
       console.log('запустилось')
       var rate
       try {
-        rate = await axios.get(`http://45.131.99.100:3005/rates?value=${1000000}`)
-        console.log('rate', rate)
+        const {data} = await axios.get(`http://45.131.99.100:3005/rates?value=${1000000}`)
+        if(data) {
+          rate = data
+        }
         
       } catch (e) {
         console.log('getRates error', e)
       }
-
-      setExchangeRate(currencyGive === 'RUB' ? rate?.asks || 0 : rate?.bids || 0)//или наоборот
+      console.log('rate', rate)
+      setExchangeRate(currencyGive === 'RUB' ? Number(rate?.asks.toFixed(2) || 0) : Number(rate?.bids.toFixed(2) || 0))//или наоборот
 
     })()
   }, [currencyGive])
