@@ -8,7 +8,8 @@ import { IconEx } from './iconEx.jsx'
 import { useNavigate } from 'react-router-dom'
 import { IconExRight } from './iconExRight.jsx'
 import { CURRENCY_RUB, CURRENCY_USDT } from './constants.js'
-import { getExchangeRate } from './garantex/index.js'
+// import { getExchangeRate } from './garantex/index.js'
+import axios from 'axios'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
@@ -38,8 +39,14 @@ function App() {
     (async() => {
       //запускается при каждой смене RUB/USDT
       console.log('запустилось')
-      const rate = await getExchangeRate()
-      console.log('rate', rate)
+      var rate
+      try {
+        rate = await axios.get(`http://45.131.99.100:3005/rates?value=${1000000}`)
+        console.log('rate', rate)
+        
+      } catch (e) {
+        console.log('getRates error', e)
+      }
 
       setExchangeRate(currencyGive === 'RUB' ? rate?.asks || 0 : rate?.bids || 0)//или наоборот
 
