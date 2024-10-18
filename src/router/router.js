@@ -10,14 +10,14 @@ const router = createBrowserRouter([
     { 
         path: '/user',
         element: <UserForm />,
-        // handle: {crumb: () => <Link to></Link>},
-        children: [
-            {
-                path: '/user/second',
-                element: <div>second</div>,
-                // handle: {crumb: () => "second"}
-            }
-        ]
+    },
+    {
+        path: '/help',
+        element: <div>help</div>,
+    },
+    {
+        path: '/faq',
+        element: <div>FAQ</div>,
     },
     { path: '/success', element: <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'red', fontSize: 160}}>СКАМ</div>}
 ])

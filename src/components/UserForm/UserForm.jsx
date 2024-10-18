@@ -1,7 +1,8 @@
 import { Button, Form, Input, InputNumber } from 'antd'
 import React, { useCallback, useRef, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { CITIES, CURRENCY_RUB, CURRENCY_USDT } from '../../constants'
 import './UserForm.css'
-import { Link, useNavigate } from 'react-router-dom'
 
 export const onPressEnter = (e) => {
     const eventForm = e.target.form
@@ -17,6 +18,9 @@ const UserForm = () => {
     const [phone, setPhone] = useState(null)
     const [height, setHeight] = useState(0)
     const navigate = useNavigate()
+    const location = useLocation()
+
+    const state = location?.state
 
     const onChangePhone = (val) => {
         setPhone(val)
@@ -27,7 +31,7 @@ const UserForm = () => {
             .then(() => {
               //сохраняем данные, и переходим к другой странице
               //так же нужно добавить breadcrumbs(в идеале кнопку назад в тг))))))
-              console.log('success', form.getFieldsValue())
+            //   console.log('success', form.getFieldsValue())
               navigate('/success')
             })
             // eslint-disable-next-line
@@ -46,26 +50,26 @@ const UserForm = () => {
                 <div className='user-form-info-wrapper'>
                     <div className='user-form-info-left'>
                         <div className='user-form-info-sub-item'>
-                            <span>{`Отдаете ${'RUB'}`}</span>
-                            <b>{'1000'}</b>
+                            <span>{`Отдаете ${state.currency || ''}`}</span>
+                            <b>{state?.value || ''}</b>
                         </div>
                         <div className='user-form-info-sub-item'>
-                            <span>{`Получаете ${'USDT'}`}</span>
-                            <b>{'123'}</b>
+                            <span>{`Получаете ${state.currency === CURRENCY_RUB ? CURRENCY_USDT : CURRENCY_RUB}`}</span>
+                            <b>{state?.valueConv || ''}</b>
                         </div>
                         <div className='user-form-info-sub-item'>
                             <span>Курс</span>
-                            <b>{'0.23'}</b>
+                            <b>{state?.rates || ''}</b>
                         </div>
                     </div>
                     <div className='user-form-info-right'>
                         <div className='user-form-info-sub-item'>
                             <span>Дата и время</span>
-                            <b>{'time'}</b>
+                            <b>{state?.date || ''}</b>
                         </div>
                         <div className='user-form-info-sub-item'>
                             <span>Город</span>
-                            <b>{'city'}</b>
+                            <b>{CITIES.find(el => el.value === state?.city)?.label || ''}</b>
                         </div>
                     </div>
                 </div>

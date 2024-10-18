@@ -6,7 +6,6 @@ import { IconEx } from './iconEx.jsx'
 import { useNavigate } from 'react-router-dom'
 import { IconExRight } from './iconExRight.jsx'
 import { CITIES, CURRENCY_RUB, CURRENCY_USDT } from './constants.js'
-// import { getExchangeRate } from './garantex/index.js'
 import axios from 'axios'
 import dayjs from 'dayjs'
 
@@ -20,7 +19,9 @@ function App() {
   const [ currencyGive, setCurrencyGive ] = useState(RUB)
   const [ currencyGet, setCurrencyGet ] = useState(USDT)
   const [ valueInt, setValueInt ] = useState(null)
-  const [ exchangeRate, setExchangeRate ] = useState(0)
+  const [ valueConv, setValueConv ] = useState(0)
+  const [ asks, setAsks ] = useState(0)
+  const [ bids, setBids ] = useState()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -32,9 +33,7 @@ function App() {
 
   useEffect(() => {
     (async() => {
-      //запускается при каждой смене RUB/USDT
-      console.log('запустилось')
-      var rate
+      var rate = null
       try {
         const {data} = await axios.get(`https://excnum.best:8443/api/rates?value=${1000000}`)
         if(data) {
@@ -43,24 +42,26 @@ function App() {
         
       } catch (e) {
         console.log('getRates error', e)
+        rate = {asks: 101, bids: 102}
       }
-      console.log('rate', rate)
-      setExchangeRate(currencyGive === 'RUB' ? Number(rate?.asks.toFixed(2) || 0) : Number(rate?.bids.toFixed(2) || 0))//или наоборот
 
+      setAsks(rate.asks)
+      setBids(rate.bids)
     })()
-  }, [currencyGive])
+    // eslint-disable-next-line
+  }, [])
 
   const convertCurrency = () => {
     setCurrencyGive(prev => prev === RUB ? USDT : RUB)
     setCurrencyGet(prev => prev === RUB ? USDT : RUB)
+    //меняем местами
+    setValueInt(valueConv || 0)
+    setValueConv(currencyGive === RUB ? (valueInt / asks).toFixed() : (valueInt * bids).toFixed(2))
   }
 
   const onChangeValue = (value) => {
       setValueInt(value)
-  }
-
-  const exchangeRateCalc = (value) => {
-    return (value * exchangeRate).toFixed(2)
+      setValueConv(currencyGive === RUB ? (value / asks).toFixed(2) : (value * bids).toFixed(2))
   }
 
   const range = (start, end) => {
@@ -75,12 +76,21 @@ function App() {
     form.validateFields()
         .then(() => {
           //сохраняем данные, и переходим к другой странице
-          //так же нужно добавить breadcrumbs(в идеале кнопку назад в тг))))))
-          console.log('success', form.getFieldsValue())
-          navigate('/user')
+          //так же нужно добавить breadcrumbs(в идеале кнопку назад в тг)
+          navigate('/user', { state: {
+            city: form.getFieldValue('city'),
+            date: dayjs(form.getFieldValue('date')).format('DD.MM.YYYY в HH'),
+            value: form.getFieldValue('inputValue'),
+            valueConv: valueConv,
+            rates: currencyGive === "RUB" ? asks : bids,
+            currency: currencyGive
+          }})
+        })
+        .catch((e) => {
+          console.log('e', e)
         })
         // eslint-disable-next-line
-  }, [form])
+  }, [form, valueConv, currencyGive, asks, bids])
 
   const disabled1WeekDate = (current) => {
     return current && (current < dayjs().startOf('day') || current > dayjs().add(7, 'day').endOf('day'))
@@ -92,16 +102,20 @@ function App() {
       : range(0, 8).concat(range(21, 24)),
     disabledMinutes: () => [],
     disabledSeconds: () => [],
-  });
+  })
 
-  const onOk = (value) => {
-    console.log('установить в форму значения ', value)
+  const goToHelp = () => {
+    navigate('/help')
+  }
+
+  const goToFAQ = () => {
+    navigate('faq')
   }
 
   return (
     <div className="app">
       <Form form={form} name='app' layout='vertical'>
-        <Form.Item label="Город" /* required */>
+        <Form.Item label="Город" name='city' rules={[{required: true, message: 'Поле обязательно для заполнения'}]}>
           <Select
             showSearch
             optionFilterProp="label"
@@ -111,7 +125,7 @@ function App() {
             options={CITIES}
           />
         </Form.Item>
-        <Form.Item label="Дата и время">
+        <Form.Item label="Дата и время" name='date' rules={[{required: true, message: 'Поле обязательно для заполнения'}]}>
           <DatePicker 
             showTime={{
               format:'HH'
@@ -119,15 +133,16 @@ function App() {
             showNow={false}
             disabledDate={disabled1WeekDate}
             disabledTime={disabledDateTime}
-            onChange={(value, dateString) => {
-              console.log('Selected Time: ', value);
-              console.log('Formatted Selected Time: ', dateString);
-            }}
-            onOk={onOk}
+            // onOk={onOk}
           />
         </Form.Item>
         {/* в label закинуть JSX, чтобы справа отображался значок обмена */}
-        <Form.Item className='app-exchange-label' label={<div className='app-exchange-title'><span>Обмен</span><IconExRight /></div>}>
+        <Form.Item
+          name="inputValue"
+          className='app-exchange-label'
+          label={<div className='app-exchange-title'><span>Обмен</span><IconExRight /></div>}
+          rules={[{required: true, message: 'Поле обязательно для заполнения'}]}
+        >
           <div className='app-exchange'>
             <div className='app-exchange-give'>
               <div className='app-exchange-left'>
@@ -137,6 +152,8 @@ function App() {
                 Отдаёте
               </div>
               <InputNumber
+                min={currencyGive === RUB ? 1000000 : 10000}//в зависимости от валюты берем значение
+                max={currencyGive === RUB ? 5000000 : 50000}//в зависимости от валюты берем значение
                 className='app-exchange-input'
                 controls={false}
                 value={valueInt}
@@ -154,18 +171,22 @@ function App() {
                 >{currencyGet}</Tag>
                 Получаете
               </div>
-              <span className='app-exchange-get-val'>{exchangeRateCalc(valueInt)}</span>
+              <span className='app-exchange-get-val'>{valueConv}</span>
             </div>
           </div>
         </Form.Item>
 
-        <div className='exchange-rate'>{`1 ${currencyGet} = ${exchangeRate} ${currencyGive}`}</div>
+        <div className='exchange-rate'>{`1 USDT = ${currencyGive === RUB ? asks : bids} RUB`}</div>
 
         <Form.Item>
           <Button className='submit-button' onClick={submitForm}>Обмен</Button>
         </Form.Item>
 
       </Form>
+
+      <div className='footer-help'><span onClick={goToHelp}>Поддержка в Telegram</span></div>
+      <div className='faq'><span onClick={goToFAQ}>О нас</span></div>
+
     </div>
   )
 }

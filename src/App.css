@@ -125,3 +125,24 @@ body {
   width: 100%;
   align-items: center;
 }
+
+.footer-help {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  span {
+    cursor: pointer;
+  }
+}
+
+.faq {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+  span {
+    cursor: pointer;
+  }
+}
