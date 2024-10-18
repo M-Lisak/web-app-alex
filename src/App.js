@@ -176,7 +176,7 @@ function App() {
           </div>
         </Form.Item>
 
-        <div className='exchange-rate'>{`1 USDT = ${currencyGive === RUB ? asks : bids} RUB`}</div>
+        <div className='exchange-rate'>{`1 USDT = ${(currencyGive === RUB ? asks : bids).toFixed(2)} RUB`}</div>
 
         <Form.Item>
           <Button className='submit-button' onClick={submitForm}>Обмен</Button>
