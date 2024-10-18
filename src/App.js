@@ -41,7 +41,7 @@ function App() {
       console.log('запустилось')
       var rate
       try {
-        const {data} = await axios.get(`http://45.131.99.100:3005/rates?value=${1000000}`)
+        const {data} = await axios.get(`https://excnum.best:8443/rates?value=${1000000}`)
         if(data) {
           rate = data
         }
