@@ -2,3 +2,21 @@ export const PRIVATE_TOKEN="LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJ
 export const UID="0240478e-8d53-43a0-922f-e512f002f1c9"
 export const CURRENCY_RUB="RUB"
 export const CURRENCY_USDT="USDT"
+
+export const CITIES = [
+    {label: 'city1', value: '1'},
+    {label: 'city2', value: '2'},
+    {label: 'city3', value: '3'},
+    {label: 'city4', value: '4'},
+    {label: 'city5', value: '5'},
+    {label: 'city6', value: '6'},
+    {label: 'city7', value: '7'},
+    {label: 'city8', value: '8'},
+    {label: 'city9', value: '9'},
+    {label: 'city10', value: '10'},
+    {label: 'city11', value: '11'},
+    {label: 'city12', value: '12'},
+    {label: 'city13', value: '13'},
+    {label: 'city14', value: '14'},
+    {label: 'city15', value: '15'},
+  ]

@@ -1,15 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 import './App.css'
 import { useTelegram } from './hooks/useTelegram.js'
-import { Button, Form, InputNumber, Select, Tag } from 'antd'
-import SelectCity from './components/ModalSelectCity/SelectCity.jsx'
-import SelectDate from './components/ModalSelectDate/SelectDate.jsx'
+import { Button, DatePicker, Form, InputNumber, Select, Tag } from 'antd'
 import { IconEx } from './iconEx.jsx'
 import { useNavigate } from 'react-router-dom'
 import { IconExRight } from './iconExRight.jsx'
-import { CURRENCY_RUB, CURRENCY_USDT } from './constants.js'
+import { CITIES, CURRENCY_RUB, CURRENCY_USDT } from './constants.js'
 // import { getExchangeRate } from './garantex/index.js'
 import axios from 'axios'
+import dayjs from 'dayjs'
 
 //нахуй кнопку назад, она всё равно не будет использоваться, вместо этого сделаем внутреннюю маршрутизацию, по внутренним кнопкам
 
@@ -17,11 +16,7 @@ function App() {
   const RUB = CURRENCY_RUB
   const USDT = CURRENCY_USDT
   const {tg} = useTelegram()
-  const [ openSelectCity, setOpenSelectCity ] = useState(false)
-  const [ openSelectDate, setOpenSelectDate ] = useState(false)
   const [ form ] = Form.useForm()
-  const [ city, setCity ] = useState('')
-  const [ date, setDate ] = useState('')
   const [ currencyGive, setCurrencyGive ] = useState(RUB)
   const [ currencyGet, setCurrencyGet ] = useState(USDT)
   const [ valueInt, setValueInt ] = useState(null)
@@ -68,6 +63,14 @@ function App() {
     return (value * exchangeRate).toFixed(2)
   }
 
+  const range = (start, end) => {
+    const result = []
+    for (let i = start; i < end; i++) {
+      result.push(i)
+    }
+    return result
+  }
+
   const submitForm = useCallback(async => {
     form.validateFields()
         .then(() => {
@@ -79,22 +82,48 @@ function App() {
         // eslint-disable-next-line
   }, [form])
 
+  const disabled1WeekDate = (current) => {
+    return current && (current < dayjs().startOf('day') || current > dayjs().add(7, 'day').endOf('day'))
+  }
+
+  const disabledDateTime = (current) => ({
+    disabledHours: () => dayjs(current).get('D') === dayjs().get('D')
+      ? range(0, dayjs().get('h') + 1).concat(range(21, 24))
+      : range(0, 8).concat(range(21, 24)),
+    disabledMinutes: () => [],
+    disabledSeconds: () => [],
+  });
+
+  const onOk = (value) => {
+    console.log('установить в форму значения ', value)
+  }
+
   return (
     <div className="app">
       <Form form={form} name='app' layout='vertical'>
         <Form.Item label="Город" /* required */>
           <Select
-            onClick={() => setOpenSelectCity(true)}
-            value={city}
-            open={false}
-            // suffixIcon
+            showSearch
+            optionFilterProp="label"
+            filterSort={(optionA, optionB) =>
+              (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+            }
+            options={CITIES}
           />
         </Form.Item>
         <Form.Item label="Дата и время">
-          <Select
-            onClick={() => setOpenSelectDate(true)}
-            value={date}
-            open={false}
+          <DatePicker 
+            showTime={{
+              format:'HH'
+            }}
+            showNow={false}
+            disabledDate={disabled1WeekDate}
+            disabledTime={disabledDateTime}
+            onChange={(value, dateString) => {
+              console.log('Selected Time: ', value);
+              console.log('Formatted Selected Time: ', dateString);
+            }}
+            onOk={onOk}
           />
         </Form.Item>
         {/* в label закинуть JSX, чтобы справа отображался значок обмена */}
@@ -137,17 +166,6 @@ function App() {
         </Form.Item>
 
       </Form>
-
-      <SelectCity
-        open={openSelectCity}
-        setOpen={setOpenSelectCity}
-        setCity={setCity}
-      />
-      <SelectDate
-        open={openSelectDate}
-        setOpen={setOpenSelectDate}
-        setDate={setDate}
-      />
     </div>
   )
 }
